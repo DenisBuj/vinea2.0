@@ -1,12 +1,51 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const service = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-export const supabase = createClient(url, anon, {
-  auth: { persistSession: false }
-});
+let _public: SupabaseClient | null = null;
+let _server: SupabaseClient | null = null;
 
+function getPublic(): SupabaseClient {
+  if (_public) return _public;
+  if (!url || !anon) {
+    throw new Error(
+      "Supabase env missing — set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    );
+  }
+  _public = createClient(url, anon, { auth: { persistSession: false } });
+  return _public;
+}
+
+/**
+ * Server-only client. Uses SUPABASE_SERVICE_ROLE_KEY when present (bypasses RLS for trusted writes).
+ * Falls back to anon if service role is missing — those writes will only succeed where RLS allows.
+ * NEVER import this from a Client Component.
+ */
+export function getServerClient(): SupabaseClient {
+  if (_server) return _server;
+  if (!url) throw new Error("NEXT_PUBLIC_SUPABASE_URL missing");
+  const key = service || anon;
+  if (!key) throw new Error("Supabase keys missing");
+  _server = createClient(url, key, { auth: { persistSession: false } });
+  return _server;
+}
+
+/**
+ * Lazy-loading proxy that defers client creation until first use.
+ * Prevents module-load crashes during Vercel's static-page collection
+ * if env vars happen to be missing.
+ */
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_t, prop: string) {
+    const c = getPublic() as any;
+    const v = c[prop];
+    return typeof v === "function" ? v.bind(c) : v;
+  }
+}) as SupabaseClient;
+
+// ── Types ─────────────────────────────────────────────────────────────────
 export type Product = {
   id: string;
   slug: string;

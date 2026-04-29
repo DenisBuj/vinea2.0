@@ -1,28 +1,48 @@
 import { cookies } from "next/headers";
+import { createHmac, timingSafeEqual } from "crypto";
 
 const COOKIE = "vinea_admin";
 
-export async function isAdmin(): Promise<boolean> {
-  const c = await cookies();
-  const v = c.get(COOKIE)?.value;
-  return !!v && v === expectedToken();
+/**
+ * Secret used to sign admin cookies. Set ADMIN_SECRET in production.
+ * If absent, falls back to ADMIN_PASSWORD (still better than nothing — but use a separate, long ADMIN_SECRET).
+ */
+function getSecret(): string {
+  const s = process.env.ADMIN_SECRET || process.env.ADMIN_PASSWORD;
+  if (!s) throw new Error("ADMIN_SECRET (or ADMIN_PASSWORD) must be set");
+  return s;
 }
 
-export function expectedToken(): string {
-  // Simple deterministic token derived from password.
-  const pw = process.env.ADMIN_PASSWORD || "vinea-admin-2026";
-  // tiny non-crypto hash; this is a demo gate, not real auth
-  let h = 0;
-  for (let i = 0; i < pw.length; i++) h = (h * 31 + pw.charCodeAt(i)) | 0;
-  return "vn-" + (h >>> 0).toString(36);
+function sign(payload: string): string {
+  return createHmac("sha256", getSecret()).update(payload).digest("hex");
+}
+
+/** Constant-time cookie verification to avoid timing attacks. */
+function verify(token: string | undefined): boolean {
+  if (!token) return false;
+  const expected = sign("admin:v1");
+  try {
+    const a = Buffer.from(token, "hex");
+    const b = Buffer.from(expected, "hex");
+    if (a.length !== b.length) return false;
+    return timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}
+
+export async function isAdmin(): Promise<boolean> {
+  const c = await cookies();
+  return verify(c.get(COOKIE)?.value);
 }
 
 export async function setAdminCookie() {
   const c = await cookies();
-  c.set(COOKIE, expectedToken(), {
+  c.set(COOKIE, sign("admin:v1"), {
     path: "/",
     httpOnly: true,
     sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 12
   });
 }
