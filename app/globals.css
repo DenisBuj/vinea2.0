@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --color-bg: #0a0907;
+  --color-bg-soft: #14110d;
+  --color-ink: #f4ede1;
+  --color-ink-dim: #b8a98e;
+  --color-line: #2a241b;
+  --color-wine: #6b1a2a;
+  --color-wine-bright: #b8324a;
+  --color-gold: #c9a86a;
+  --color-gold-bright: #e3c98a;
+  --color-cream: #ede0c5;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(107,26,42,0.18), transparent 50%),
+    radial-gradient(circle at 80% 100%, rgba(201,168,106,0.08), transparent 50%);
+  min-height: 100vh;
+}
+
+.font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+.font-italic-display { font-family: var(--font-display); font-style: italic; letter-spacing: -0.01em; }
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee {
+  animation: marquee 38s linear infinite;
+}
+
+/* Subtle reveal */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: rise 0.7s ease-out both; }
+.rise-2 { animation: rise 0.7s ease-out 0.12s both; }
+.rise-3 { animation: rise 0.7s ease-out 0.24s both; }
+
+/* Grain overlay */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  z-index: 60;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+}
+
+button, a { cursor: pointer; }
+
+/* Print styles for admin order */
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body { background-image: none !important; }
+  body::before, body::after { display: none !important; }
+  header, footer, nav { display: none !important; }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  main { padding: 0 !important; }
+}
+.print-only { display: none; }
