@@ -30,72 +30,71 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   return (
     <div className="max-w-7xl mx-auto px-5 lg:px-10 pt-12 pb-24">
-      <Link href="/shop" className="text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-gold-bright)]">← Back to shop</Link>
+      <Link href="/shop" className="text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-accent)]">← Terug naar shop</Link>
 
       <div className="mt-6 grid lg:grid-cols-2 gap-12">
         <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-[var(--color-bg-soft)]">
           {p.image_url && (
             <Image src={p.image_url} alt={p.name} fill priority className="object-cover" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
         </div>
 
         <div className="flex flex-col">
-          <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
-            <span className="px-3 py-1 rounded-full border border-[var(--color-gold)]/40">{typeLabel(p.type)}</span>
+          <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.2em] text-[var(--color-accent)]">
+            <span className="px-3 py-1 rounded-full border border-[var(--color-accent)]/40 bg-white">{typeLabel(p.type)}</span>
             {p.region && <span>· {p.region}</span>}
             {p.country && <span>· {p.country}</span>}
           </div>
 
-          <h1 className="font-display text-5xl md:text-6xl leading-[1.05] mt-5">{p.name}</h1>
-          <div className="mt-2 text-[var(--color-ink-dim)] text-lg">
+          <h1 className="font-display text-5xl md:text-6xl leading-[1.05] mt-5 text-[var(--color-ink)]">{p.name}</h1>
+          <div className="mt-2 text-[var(--color-ink-soft)] text-lg">
             {p.producer}{p.vintage ? ` · ${p.vintage}` : ""}
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
             {p.grape && (
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--color-bg-soft)]/50 border border-[var(--color-line)]">
-                <Grape size={16} className="text-[var(--color-gold-bright)]" />
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-white border border-[var(--color-line)]">
+                <Grape size={16} className="text-[var(--color-accent)]" />
                 <span>{p.grape}</span>
               </div>
             )}
             {p.region && (
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--color-bg-soft)]/50 border border-[var(--color-line)]">
-                <MapPin size={16} className="text-[var(--color-gold-bright)]" />
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-white border border-[var(--color-line)]">
+                <MapPin size={16} className="text-[var(--color-accent)]" />
                 <span>{p.region}</span>
               </div>
             )}
             {p.vintage && (
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--color-bg-soft)]/50 border border-[var(--color-line)]">
-                <Calendar size={16} className="text-[var(--color-gold-bright)]" />
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-white border border-[var(--color-line)]">
+                <Calendar size={16} className="text-[var(--color-accent)]" />
                 <span>{p.vintage}</span>
               </div>
             )}
             {p.alcohol_pct != null && (
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--color-bg-soft)]/50 border border-[var(--color-line)]">
-                <Wine size={16} className="text-[var(--color-gold-bright)]" />
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-white border border-[var(--color-line)]">
+                <Wine size={16} className="text-[var(--color-accent)]" />
                 <span>{p.alcohol_pct}% ABV</span>
               </div>
             )}
           </div>
 
           {p.description && (
-            <p className="mt-8 text-[var(--color-ink-dim)] text-lg leading-relaxed">{p.description}</p>
+            <p className="mt-8 text-[var(--color-ink-soft)] text-lg leading-relaxed">{p.description}</p>
           )}
 
           {p.tasting_notes && (
-            <div className="mt-6 p-5 rounded-2xl bg-[var(--color-wine)]/10 border border-[var(--color-wine)]/30">
-              <div className="text-xs uppercase tracking-[0.3em] text-[var(--color-gold-bright)]">Tasting</div>
-              <p className="mt-2 italic font-display text-lg">{p.tasting_notes}</p>
+            <div className="mt-6 p-5 rounded-2xl bg-[var(--color-bg-warm)]/50 border border-[var(--color-line)]">
+              <div className="text-xs uppercase tracking-[0.3em] text-[var(--color-accent)]">Tasting</div>
+              <p className="mt-2 italic font-display text-lg text-[var(--color-ink)]">{p.tasting_notes}</p>
             </div>
           )}
 
           {p.food_pairings && p.food_pairings.length > 0 && (
             <div className="mt-6">
-              <div className="text-xs uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">Pairs with</div>
+              <div className="text-xs uppercase tracking-[0.3em] text-[var(--color-accent)] mb-3">Past bij</div>
               <div className="flex flex-wrap gap-2">
                 {p.food_pairings.map(f => (
-                  <span key={f} className="px-3 py-1.5 rounded-full bg-[var(--color-bg-soft)] border border-[var(--color-line)] text-sm">
+                  <span key={f} className="px-3 py-1.5 rounded-full bg-white border border-[var(--color-line)] text-sm">
                     {f}
                   </span>
                 ))}
@@ -105,9 +104,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
           <div className="mt-auto pt-10">
             <div className="flex items-end justify-between mb-4">
-              <div className="font-display text-4xl text-[var(--color-gold-bright)]">{money(p.price_cents)}</div>
+              <div className="font-display text-4xl text-[var(--color-cta)]">{money(p.price_cents)}</div>
               <div className="text-sm text-[var(--color-ink-dim)]">
-                {p.stock > 0 ? `${p.stock} bottles in stock` : "Sold out"}
+                {p.stock > 0 ? `${p.stock} flessen in stock` : "Uitverkocht"}
               </div>
             </div>
             <div className="flex gap-3">
@@ -117,7 +116,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <WishlistButton productId={p.id} initiallyOn={onWishlist} />
             </div>
             <p className="mt-3 text-xs text-[var(--color-ink-dim)]">
-              Free delivery in Belgium over €250 · €15 flat below.
+              Gratis levering in België vanaf €250 · €15 forfait daaronder.
             </p>
           </div>
         </div>
@@ -125,7 +124,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
       {related.length > 0 && (
         <section className="mt-24">
-          <h3 className="font-display text-3xl mb-6">More <span className="font-italic-display">{typeLabel(p.type).toLowerCase()}</span> from the roster</h3>
+          <h3 className="font-display text-3xl mb-6 text-[var(--color-ink)]">Meer <span className="font-italic-display">{typeLabel(p.type).toLowerCase()}</span> uit de selectie</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {related.map(r => <ProductCard key={r.id} p={r} />)}
           </div>

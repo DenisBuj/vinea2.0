@@ -24,18 +24,18 @@ export default async function CheckoutPage() {
   if (lines.length === 0) {
     return (
       <div className="max-w-3xl mx-auto px-5 py-24 text-center">
-        <h1 className="font-display text-4xl">Your cart is empty</h1>
-        <Link href="/shop" className="mt-6 inline-block px-6 py-3 rounded-full bg-[var(--color-gold)] text-[var(--color-bg)]">Back to shop</Link>
+        <h1 className="font-display text-4xl">Je mand is leeg</h1>
+        <Link href="/shop" className="mt-6 inline-block px-6 py-3 rounded-full btn-cta">Terug naar shop</Link>
       </div>
     );
   }
 
   return (
     <div className="max-w-6xl mx-auto px-5 lg:px-10 pt-12 pb-24">
-      <div className="text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]">Step 2 of 2</div>
-      <h1 className="font-display text-5xl md:text-6xl mt-2">Checkout</h1>
+      <div className="text-xs uppercase tracking-[0.3em] text-[var(--color-accent)]">Stap 2 van 2</div>
+      <h1 className="font-display text-5xl md:text-6xl mt-2 text-[var(--color-ink)]">Betalen</h1>
       <p className="mt-3 text-[var(--color-ink-dim)] text-sm">
-        ⚠️ This is a test environment. No real payment is taken — fill anything you like.
+        ⚠️ Dit is een testomgeving. Geen echte betaling — vul wat je wil.
       </p>
 
       <div className="mt-10 grid lg:grid-cols-5 gap-10">
@@ -43,12 +43,12 @@ export default async function CheckoutPage() {
           <CheckoutForm />
         </div>
 
-        <aside className="lg:col-span-2 self-start rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-soft)]/40 p-6">
-          <h3 className="font-display text-2xl">Order</h3>
+        <aside className="lg:col-span-2 self-start rounded-2xl border border-[var(--color-line)] bg-white p-6 shadow-sm">
+          <h3 className="font-display text-2xl">Bestelling</h3>
           <ul className="mt-5 space-y-4">
             {lines.map(l => (
               <li key={l.productId} className="flex gap-3">
-                <div className="relative w-14 h-18 shrink-0 rounded-md overflow-hidden bg-[var(--color-bg)]">
+                <div className="relative w-14 h-18 shrink-0 rounded-md overflow-hidden bg-[var(--color-bg-soft)]">
                   {l.product.image_url && <Image src={l.product.image_url} alt={l.product.name} fill className="object-cover" />}
                 </div>
                 <div className="flex-1 text-sm">
@@ -60,10 +60,10 @@ export default async function CheckoutPage() {
             ))}
           </ul>
           <dl className="mt-5 space-y-2 border-t border-[var(--color-line)] pt-4 text-sm">
-            <div className="flex justify-between"><dt className="text-[var(--color-ink-dim)]">Subtotal</dt><dd>{money(subtotal)}</dd></div>
-            <div className="flex justify-between"><dt className="text-[var(--color-ink-dim)]">Shipping</dt><dd>{shipping === 0 ? "Free" : money(shipping)}</dd></div>
+            <div className="flex justify-between"><dt className="text-[var(--color-ink-dim)]">Subtotaal</dt><dd>{money(subtotal)}</dd></div>
+            <div className="flex justify-between"><dt className="text-[var(--color-ink-dim)]">Levering</dt><dd>{shipping === 0 ? "Gratis" : money(shipping)}</dd></div>
             <div className="flex justify-between border-t border-[var(--color-line)] pt-3 text-lg font-display">
-              <dt>Total</dt><dd className="text-[var(--color-gold-bright)]">{money(total)}</dd>
+              <dt>Totaal</dt><dd className="text-[var(--color-cta)]">{money(total)}</dd>
             </div>
           </dl>
         </aside>

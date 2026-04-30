@@ -4,29 +4,37 @@ export function money(cents: number): string {
 
 export function typeLabel(t: string): string {
   switch (t) {
-    case "red": return "Red";
-    case "white": return "White";
+    case "red": return "Rood";
+    case "white": return "Wit";
     case "rose": return "Rosé";
-    case "sparkling": return "Sparkling";
+    case "sparkling": return "Bubbels";
     case "champagne": return "Champagne";
-    case "orange": return "Orange";
+    case "orange": return "Oranje";
     case "dessert": return "Dessert";
     default: return t;
   }
 }
 
 export function statusLabel(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
+  switch (s) {
+    case "pending": return "In afwachting";
+    case "paid": return "Betaald";
+    case "processing": return "In voorbereiding";
+    case "shipped": return "Verzonden";
+    case "delivered": return "Geleverd";
+    case "cancelled": return "Geannuleerd";
+    default: return s;
+  }
 }
 
 export function statusColor(s: string): string {
   switch (s) {
-    case "pending": return "bg-yellow-500/15 text-yellow-300 border-yellow-500/30";
-    case "paid": return "bg-emerald-500/15 text-emerald-300 border-emerald-500/30";
-    case "processing": return "bg-blue-500/15 text-blue-300 border-blue-500/30";
-    case "shipped": return "bg-indigo-500/15 text-indigo-300 border-indigo-500/30";
-    case "delivered": return "bg-green-500/15 text-green-300 border-green-500/30";
-    case "cancelled": return "bg-red-500/15 text-red-300 border-red-500/30";
-    default: return "bg-white/10 text-white/70 border-white/20";
+    case "pending": return "bg-amber-50 text-amber-800 border-amber-200";
+    case "paid": return "bg-emerald-50 text-emerald-800 border-emerald-200";
+    case "processing": return "bg-blue-50 text-blue-800 border-blue-200";
+    case "shipped": return "bg-indigo-50 text-indigo-800 border-indigo-200";
+    case "delivered": return "bg-green-50 text-green-800 border-green-300";
+    case "cancelled": return "bg-red-50 text-red-800 border-red-200";
+    default: return "bg-stone-100 text-stone-700 border-stone-200";
   }
 }

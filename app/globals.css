@@ -4,21 +4,31 @@
   --font-display: "Fraunces", "Cormorant Garamond", ui-serif, Georgia, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
-  --color-bg: #0a0907;
-  --color-bg-soft: #14110d;
-  --color-ink: #f4ede1;
-  --color-ink-dim: #b8a98e;
-  --color-line: #2a241b;
-  --color-wine: #6b1a2a;
-  --color-wine-bright: #b8324a;
-  --color-gold: #c9a86a;
-  --color-gold-bright: #e3c98a;
-  --color-cream: #ede0c5;
+  /* ── Light palette (off-white + forest, burgundy reserved for CTAs) ── */
+  --color-bg: #faf8f3;          /* off-white page background */
+  --color-bg-soft: #f1ece1;     /* ivory tint for cards / strips */
+  --color-bg-warm: #e9e2d2;     /* warmer beige for emphasis sections */
+  --color-ink: #1a1a1a;         /* charcoal body */
+  --color-ink-soft: #3a3a36;    /* secondary text */
+  --color-ink-dim: #6b6760;     /* muted */
+  --color-line: #e0d8c5;        /* card borders, dividers */
+  --color-line-strong: #c8bfaa; /* hover borders */
+
+  /* Accent — forest, used for section labels, links, hover states */
+  --color-accent: #1b3a2a;
+  --color-accent-bright: #2a5a40;
+
+  /* Subtle gold details (badges, vintage chips) */
+  --color-gold: #b08842;
+  --color-gold-soft: #d9c39a;
+
+  /* CTA color — DEEP WINE BURGUNDY, reserved for Cart / Pay / Checkout flows */
+  --color-cta: #6b1a2a;
+  --color-cta-hover: #861f33;
+  --color-cta-ink: #fdf6ee;
 }
 
-:root {
-  color-scheme: dark;
-}
+:root { color-scheme: light; }
 
 html, body {
   background: var(--color-bg);
@@ -29,46 +39,64 @@ html, body {
 
 body {
   background-image:
-    radial-gradient(circle at 20% 0%, rgba(107,26,42,0.18), transparent 50%),
-    radial-gradient(circle at 80% 100%, rgba(201,168,106,0.08), transparent 50%);
+    radial-gradient(circle at 12% 0%, rgba(27,58,42,0.06), transparent 55%),
+    radial-gradient(circle at 88% 100%, rgba(107,26,42,0.05), transparent 55%);
   min-height: 100vh;
 }
 
 .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
 .font-italic-display { font-family: var(--font-display); font-style: italic; letter-spacing: -0.01em; }
 
+/* ── Reusable button helpers ───────────────────────────────────── */
+.btn-cta {
+  background: var(--color-cta);
+  color: var(--color-cta-ink);
+  border: 1px solid var(--color-cta);
+  transition: background .2s, transform .15s;
+}
+.btn-cta:hover { background: var(--color-cta-hover); }
+.btn-cta:active { transform: translateY(1px); }
+
+.btn-accent {
+  background: var(--color-accent);
+  color: #fdf6ee;
+  border: 1px solid var(--color-accent);
+}
+.btn-accent:hover { background: var(--color-accent-bright); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-line-strong);
+}
+.btn-outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
 /* Marquee */
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-.marquee {
-  animation: marquee 38s linear infinite;
-}
+.marquee { animation: marquee 38s linear infinite; }
 
 /* Subtle reveal */
 @keyframes rise {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.rise { animation: rise 0.7s ease-out both; }
+.rise   { animation: rise 0.7s ease-out both; }
 .rise-2 { animation: rise 0.7s ease-out 0.12s both; }
 .rise-3 { animation: rise 0.7s ease-out 0.24s both; }
 
-/* Grain overlay */
-.grain::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.07;
-  z-index: 60;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+/* Live status pulse for realtime indicator */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.5; transform: scale(0.85); }
 }
+.pulse-dot { animation: pulse-dot 1.4s ease-in-out infinite; }
 
 button, a { cursor: pointer; }
 
-/* Print styles for admin order */
+/* Print styles */
 @media print {
   html, body { background: #fff !important; color: #000 !important; }
   body { background-image: none !important; }

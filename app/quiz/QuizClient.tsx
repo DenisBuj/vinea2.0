@@ -16,62 +16,62 @@ type Q = {
 const QUESTIONS: Q[] = [
   {
     key: "vibe",
-    prompt: "It's Friday, 9pm. What's the vibe?",
+    prompt: "Het is vrijdag, 21u. Wat is de vibe?",
     options: [
-      { label: "House party, big speakers, plates everywhere", tags: ["sparkling", "rose", "low_abv"] },
-      { label: "Candlelit dinner, slow conversation", tags: ["red", "premium"] },
-      { label: "Rooftop golden hour with friends", tags: ["rose", "white", "sparkling"] },
-      { label: "Couch + something good on TV", tags: ["red", "value"] }
+      { label: "Huisfeest, grote speakers, borden overal", tags: ["sparkling", "rose", "low_abv"] },
+      { label: "Diner bij kaarslicht, traag gesprek", tags: ["red", "premium"] },
+      { label: "Rooftop bij zonsondergang met vrienden", tags: ["rose", "white", "sparkling"] },
+      { label: "Bank + iets goeds op TV", tags: ["red", "value"] }
     ]
   },
   {
     key: "flavor",
-    prompt: "When you taste, you're chasing…",
+    prompt: "Als je proeft, jaag je op…",
     options: [
-      { label: "Bright + crunchy + zippy", tags: ["white", "rose", "sparkling"] },
-      { label: "Deep + brooding + complex", tags: ["red", "premium"] },
-      { label: "Funky + new + a story", tags: ["orange", "natural"] },
-      { label: "Smooth + easy + crowd-pleasing", tags: ["red", "rose", "value"] }
+      { label: "Helder + krokant + pittig", tags: ["white", "rose", "sparkling"] },
+      { label: "Diep + broeierig + complex", tags: ["red", "premium"] },
+      { label: "Funky + nieuw + met een verhaal", tags: ["orange", "natural"] },
+      { label: "Soepel + makkelijk + voor iedereen", tags: ["red", "rose", "value"] }
     ]
   },
   {
     key: "food",
-    prompt: "Tonight's food situation:",
+    prompt: "Vanavond eet je:",
     options: [
-      { label: "Pasta, pizza, or anything Italian", tags: ["red", "white"] },
-      { label: "Sushi, ramen, anything spicy", tags: ["white", "rose", "sparkling"] },
-      { label: "Steak, lamb, big proteins", tags: ["red", "premium"] },
+      { label: "Pasta, pizza, of iets Italiaans", tags: ["red", "white"] },
+      { label: "Sushi, ramen, iets pittigs", tags: ["white", "rose", "sparkling"] },
+      { label: "Steak, lam, grote eiwitten", tags: ["red", "premium"] },
       { label: "Snacks, charcuterie, vibes", tags: ["sparkling", "rose", "orange"] }
     ]
   },
   {
     key: "budget",
-    prompt: "Budget per bottle?",
+    prompt: "Budget per fles?",
     options: [
-      { label: "Under €20 — good times", tags: ["value"] },
+      { label: "Onder €20 — gewoon goed", tags: ["value"] },
       { label: "€20 – €40 — sweet spot", tags: ["mid"] },
-      { label: "€40+ — special night", tags: ["premium"] },
-      { label: "Don't care, surprise me", tags: [] }
+      { label: "€40+ — speciale avond", tags: ["premium"] },
+      { label: "Maakt niet uit, verras me", tags: [] }
     ]
   },
   {
     key: "adventure",
-    prompt: "How adventurous are you feeling?",
+    prompt: "Hoe avontuurlijk voel je je?",
     options: [
-      { label: "Stick to what I know", tags: ["red", "white", "value"] },
-      { label: "Try something new", tags: ["orange", "natural", "rose"] },
-      { label: "Go off-piste, drop something weird", tags: ["orange", "natural"] },
-      { label: "Classic is classic for a reason", tags: ["champagne", "premium", "red"] }
+      { label: "Houd het bij wat ik ken", tags: ["red", "white", "value"] },
+      { label: "Probeer iets nieuws", tags: ["orange", "natural", "rose"] },
+      { label: "Geef mij iets vreemds", tags: ["orange", "natural"] },
+      { label: "Klassiek is klassiek met reden", tags: ["champagne", "premium", "red"] }
     ]
   },
   {
     key: "occasion",
-    prompt: "Final question: this bottle is for…",
+    prompt: "Laatste vraag: deze fles is voor…",
     options: [
-      { label: "Just me, this evening", tags: ["value", "white", "red"] },
-      { label: "A date", tags: ["sparkling", "champagne", "rose"] },
-      { label: "Friends coming over", tags: ["rose", "red", "value"] },
-      { label: "A gift", tags: ["premium", "champagne"] }
+      { label: "Mij, vanavond", tags: ["value", "white", "red"] },
+      { label: "Een date", tags: ["sparkling", "champagne", "rose"] },
+      { label: "Vrienden die langskomen", tags: ["rose", "red", "value"] },
+      { label: "Een cadeau", tags: ["premium", "champagne"] }
     ]
   }
 ];
@@ -115,40 +115,39 @@ export default function QuizClient({ products }: { products: Product[] }) {
 
     return (
       <div className="max-w-5xl mx-auto px-5 lg:px-10 pt-12 pb-24">
-        <div className="text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]">Your match</div>
-        <h1 className="font-display text-5xl md:text-7xl mt-3 leading-[0.95]">
-          Three for <span className="font-italic-display text-[var(--color-gold-bright)]">you</span>.
+        <div className="text-xs uppercase tracking-[0.3em] text-[var(--color-accent)]">Jouw match</div>
+        <h1 className="font-display text-5xl md:text-7xl mt-3 leading-[0.95] text-[var(--color-ink)]">
+          Drie voor <span className="font-italic-display text-[var(--color-cta)]">jou</span>.
         </h1>
-        <p className="mt-4 text-[var(--color-ink-dim)] max-w-xl">Hand-picked from the roster based on your answers. Skip the small talk, drink something good.</p>
+        <p className="mt-4 text-[var(--color-ink-soft)] max-w-xl">Met de hand gekozen uit de selectie op basis van jouw antwoorden. Skip de small talk, drink iets goeds.</p>
 
         <div className="mt-10 grid md:grid-cols-3 gap-5">
           {ranked.map(({ p }, i) => (
             <Link
               key={p.id}
               href={`/shop/${p.slug}`}
-              className="group rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-soft)]/50 overflow-hidden hover:border-[var(--color-gold)]/40 transition"
+              className="group rounded-2xl border border-[var(--color-line)] bg-white overflow-hidden hover:border-[var(--color-accent)]/40 hover:shadow-lg transition shadow-sm"
             >
               <div className="relative aspect-[4/5]">
                 {p.image_url && <Image src={p.image_url} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                <div className="absolute top-3 left-3 flex items-center gap-1 text-[10px] uppercase tracking-[0.2em] px-2 py-1 rounded-full bg-[var(--color-gold)]/90 text-[var(--color-bg)]">
+                <div className="absolute top-3 left-3 flex items-center gap-1 text-[10px] uppercase tracking-[0.2em] px-2 py-1 rounded-full bg-[var(--color-cta)] text-white font-medium">
                   <Sparkles size={10} /> #{i + 1} match
                 </div>
               </div>
               <div className="p-5">
-                <div className="text-xs uppercase tracking-[0.2em] text-[var(--color-gold)]">{typeLabel(p.type)}</div>
-                <div className="font-display text-xl mt-1">{p.name}</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)]">{typeLabel(p.type)}</div>
+                <div className="font-display text-xl mt-1 text-[var(--color-ink)]">{p.name}</div>
                 <div className="text-xs text-[var(--color-ink-dim)]">{p.producer} · {p.region}</div>
                 <div className="mt-3 flex items-center justify-between">
-                  <span className="font-display text-xl text-[var(--color-gold-bright)]">{money(p.price_cents)}</span>
-                  <span className="text-sm group-hover:text-[var(--color-gold-bright)]">View →</span>
+                  <span className="font-display text-xl text-[var(--color-cta)]">{money(p.price_cents)}</span>
+                  <span className="text-sm group-hover:text-[var(--color-accent)]">Bekijk →</span>
                 </div>
               </div>
             </Link>
           ))}
         </div>
 
-        <button onClick={reset} className="mt-10 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-gold-bright)]">↻ Retake the quiz</button>
+        <button onClick={reset} className="mt-10 text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-accent)]">↻ Quiz opnieuw doen</button>
       </div>
     );
   }
@@ -158,25 +157,25 @@ export default function QuizClient({ products }: { products: Product[] }) {
 
   return (
     <div className="max-w-3xl mx-auto px-5 lg:px-10 pt-12 pb-24">
-      <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]">
-        <span>Sommelier quiz</span>
+      <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-[var(--color-accent)]">
+        <span>Sommelier-quiz</span>
         <span>{step + 1} / {QUESTIONS.length}</span>
       </div>
       <div className="mt-3 h-1 rounded-full bg-[var(--color-line)] overflow-hidden">
-        <div className="h-full bg-[var(--color-gold)] transition-all" style={{ width: `${pct}%` }} />
+        <div className="h-full bg-[var(--color-accent)] transition-all" style={{ width: `${pct}%` }} />
       </div>
 
-      <h1 className="font-display text-4xl md:text-6xl mt-10 leading-[1.05]">{q.prompt}</h1>
+      <h1 className="font-display text-4xl md:text-6xl mt-10 leading-[1.05] text-[var(--color-ink)]">{q.prompt}</h1>
 
       <div className="mt-10 grid sm:grid-cols-2 gap-3">
         {q.options.map((o, idx) => (
           <button
             key={idx}
             onClick={() => choose(o.tags)}
-            className="group text-left p-5 rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-soft)]/30 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-bg-soft)] transition flex items-center justify-between gap-4"
+            className="group text-left p-5 rounded-2xl border border-[var(--color-line)] bg-white hover:border-[var(--color-accent)] hover:shadow-md transition flex items-center justify-between gap-4"
           >
-            <span className="font-display text-lg">{o.label}</span>
-            <ArrowRight size={16} className="text-[var(--color-ink-dim)] group-hover:text-[var(--color-gold-bright)] group-hover:translate-x-1 transition-transform" />
+            <span className="font-display text-lg text-[var(--color-ink)]">{o.label}</span>
+            <ArrowRight size={16} className="text-[var(--color-ink-dim)] group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-transform" />
           </button>
         ))}
       </div>

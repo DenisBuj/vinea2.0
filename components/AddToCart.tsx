@@ -11,19 +11,19 @@ export default function AddToCart({ productId, stock }: { productId: string; sto
 
   if (stock === 0) {
     return (
-      <button disabled className="w-full py-4 rounded-full bg-white/5 text-[var(--color-ink-dim)] cursor-not-allowed">
-        Sold out — back soon
+      <button disabled className="w-full py-4 rounded-full bg-[var(--color-bg-soft)] text-[var(--color-ink-dim)] cursor-not-allowed border border-[var(--color-line)]">
+        Uitverkocht — binnenkort terug
       </button>
     );
   }
 
   return (
     <div className="flex flex-col sm:flex-row gap-3">
-      <div className="flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-bg-soft)]">
+      <div className="flex items-center rounded-full border border-[var(--color-line-strong)] bg-white">
         <button
           aria-label="decrease"
           onClick={() => setQty(q => Math.max(1, q - 1))}
-          className="px-4 py-3 hover:text-[var(--color-gold-bright)]"
+          className="px-4 py-3 hover:text-[var(--color-cta)]"
         >
           <Minus size={14} />
         </button>
@@ -31,7 +31,7 @@ export default function AddToCart({ productId, stock }: { productId: string; sto
         <button
           aria-label="increase"
           onClick={() => setQty(q => Math.min(stock, q + 1))}
-          className="px-4 py-3 hover:text-[var(--color-gold-bright)]"
+          className="px-4 py-3 hover:text-[var(--color-cta)]"
         >
           <Plus size={14} />
         </button>
@@ -45,15 +45,15 @@ export default function AddToCart({ productId, stock }: { productId: string; sto
           })
         }
         disabled={pending}
-        className="flex-1 inline-flex items-center justify-center gap-2 py-4 rounded-full bg-[var(--color-gold)] text-[var(--color-bg)] font-medium hover:bg-[var(--color-gold-bright)] transition disabled:opacity-60"
+        className="flex-1 inline-flex items-center justify-center gap-2 py-4 rounded-full btn-cta font-medium disabled:opacity-60"
       >
         {done ? (
           <>
-            <Check size={16} /> Added to cart
+            <Check size={16} /> Toegevoegd aan mand
           </>
         ) : (
           <>
-            <ShoppingBag size={16} /> {pending ? "Adding…" : "Add to cart"}
+            <ShoppingBag size={16} /> {pending ? "Toevoegen…" : "Voeg toe aan mand"}
           </>
         )}
       </button>

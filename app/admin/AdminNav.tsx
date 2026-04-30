@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, Boxes, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, Boxes, Wine, LogOut } from "lucide-react";
 
 export default function AdminNav() {
   const path = usePathname();
@@ -13,8 +13,8 @@ export default function AdminNav() {
         href={href}
         className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm transition ${
           active
-            ? "bg-[var(--color-gold)] text-[var(--color-bg)]"
-            : "border border-[var(--color-line)] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"
+            ? "bg-[var(--color-accent)] text-white"
+            : "bg-white border border-[var(--color-line-strong)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
         }`}
       >
         <Icon size={14} /> {label}
@@ -26,11 +26,12 @@ export default function AdminNav() {
       <div className="flex flex-wrap gap-3">
         {item("/admin", "Dashboard", LayoutDashboard, true)}
         {item("/admin/orders", "Orders", Package)}
-        {item("/admin/inventory", "Inventory", Boxes)}
+        {item("/admin/products", "Wijnen", Wine)}
+        {item("/admin/inventory", "Stock", Boxes)}
       </div>
       <form action="/api/admin/logout" method="post">
-        <button className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--color-line)] text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-wine-bright)]">
-          <LogOut size={14} /> Sign out
+        <button className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--color-line-strong)] bg-white text-sm text-[var(--color-ink-soft)] hover:border-[var(--color-cta)] hover:text-[var(--color-cta)]">
+          <LogOut size={14} /> Uitloggen
         </button>
       </form>
     </nav>

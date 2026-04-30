@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { addToCart, removeFromCart, updateQty, clearCart, getCart } from "@/lib/cart";
 import { toggleWishlist } from "@/lib/wishlist";
 import { getServerClient } from "@/lib/supabase";
+import { isAdmin } from "@/lib/admin";
 
 // ── Cart actions ──────────────────────────────────────────────────────────
 export async function addToCartAction(productId: string, qty: number) {
@@ -45,7 +46,7 @@ export async function placeOrderAction(
   input: ShippingInput
 ): Promise<{ ok: true; orderNumber: string } | { ok: false; error: string }> {
   const cart = await getCart();
-  if (cart.length === 0) return { ok: false, error: "Cart is empty" };
+  if (cart.length === 0) return { ok: false, error: "Mand is leeg" };
 
   const sb = getServerClient();
   const payload = {
@@ -62,20 +63,23 @@ export async function placeOrderAction(
     notes: input.notes ?? ""
   };
 
-  // Single transactional RPC: validates stock, calculates totals server-side,
-  // creates order + items + decrements stock atomically.
   const { data, error } = await sb.rpc("place_order", { p_payload: payload });
   if (error) return { ok: false, error: error.message };
   const orderNumber = (data as any)?.order_number as string | undefined;
-  if (!orderNumber) return { ok: false, error: "Order returned no number" };
+  if (!orderNumber) return { ok: false, error: "Bestelling kreeg geen nummer" };
 
   await clearCart();
   revalidatePath("/", "layout");
   return { ok: true, orderNumber };
 }
 
-// ── Admin actions (use server client → service role bypasses RLS) ─────────
+// ── Admin actions (server client uses service role → bypasses RLS) ────────
+async function requireAdmin() {
+  if (!(await isAdmin())) throw new Error("Niet geautoriseerd");
+}
+
 export async function updateOrderStatusAction(orderId: string, status: string) {
+  await requireAdmin();
   const sb = getServerClient();
   await sb.from("orders").update({ status }).eq("id", orderId);
   revalidatePath("/admin/orders");
@@ -83,7 +87,87 @@ export async function updateOrderStatusAction(orderId: string, status: string) {
 }
 
 export async function updateStockAction(productId: string, stock: number) {
+  await requireAdmin();
   const sb = getServerClient();
   await sb.from("products").update({ stock }).eq("id", productId);
   revalidatePath("/admin/inventory");
+  revalidatePath("/admin/products");
+}
+
+export async function addStockAction(productId: string, qty: number): Promise<number> {
+  await requireAdmin();
+  if (qty <= 0) throw new Error("Aantal moet > 0 zijn");
+  const sb = getServerClient();
+  const { data: cur } = await sb.from("products").select("stock").eq("id", productId).maybeSingle();
+  const newStock = (cur?.stock ?? 0) + qty;
+  await sb.from("products").update({ stock: newStock }).eq("id", productId);
+  revalidatePath("/admin/inventory");
+  revalidatePath("/admin/products");
+  return newStock;
+}
+
+// ── Product CRUD ─────────────────────────────────────────────────────────
+type ProductInput = {
+  slug: string;
+  name: string;
+  producer: string;
+  region: string | null;
+  country: string | null;
+  type: string;
+  grape: string | null;
+  vintage: number | null;
+  description: string | null;
+  tasting_notes: string | null;
+  food_pairings: string[];
+  alcohol_pct: number | null;
+  price_cents: number;
+  stock: number;
+  image_url: string | null;
+  featured: boolean;
+  hype_score: number;
+};
+
+export async function createProductAction(
+  input: ProductInput
+): Promise<{ ok: true; id: string } | { ok: false; error: string }> {
+  await requireAdmin();
+  const sb = getServerClient();
+  const { data, error } = await sb.from("products").insert(input).select("id").single();
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/admin/products");
+  revalidatePath("/admin/inventory");
+  revalidatePath("/shop");
+  revalidatePath("/");
+  return { ok: true, id: data.id as string };
+}
+
+export async function updateProductAction(
+  id: string,
+  input: ProductInput
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  await requireAdmin();
+  const sb = getServerClient();
+  const { error } = await sb.from("products").update(input).eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/admin/products");
+  revalidatePath("/admin/inventory");
+  revalidatePath(`/admin/products/${id}`);
+  revalidatePath("/shop");
+  revalidatePath(`/shop/${input.slug}`);
+  revalidatePath("/");
+  return { ok: true };
+}
+
+export async function deleteProductAction(
+  id: string
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  await requireAdmin();
+  const sb = getServerClient();
+  const { error } = await sb.from("products").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/admin/products");
+  revalidatePath("/admin/inventory");
+  revalidatePath("/shop");
+  revalidatePath("/");
+  return { ok: true };
 }

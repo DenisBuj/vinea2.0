@@ -12,9 +12,9 @@ export default function AdminLogin() {
 
   return (
     <div className="max-w-md mx-auto px-5 pt-24 pb-24">
-      <div className="text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]">Vinea HQ</div>
-      <h1 className="font-display text-5xl mt-2">Admin login</h1>
-      <p className="mt-3 text-[var(--color-ink-dim)] text-sm">Single-password gate. For the demo: <span className="font-mono text-[var(--color-gold-bright)]">vinea-admin-2026</span></p>
+      <div className="text-xs uppercase tracking-[0.3em] text-[var(--color-accent)]">Vinea HQ</div>
+      <h1 className="font-display text-5xl mt-2 text-[var(--color-ink)]">Admin login</h1>
+      <p className="mt-3 text-[var(--color-ink-soft)] text-sm">Wachtwoord-gate. Demo: <span className="font-mono text-[var(--color-cta)]">vinea-admin-2026</span></p>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -26,7 +26,7 @@ export default function AdminLogin() {
               body: JSON.stringify({ password })
             });
             if (r.ok) { router.push("/admin"); router.refresh(); }
-            else setError("Wrong password");
+            else setError("Wachtwoord klopt niet");
           });
         }}
         className="mt-8 space-y-4"
@@ -37,13 +37,13 @@ export default function AdminLogin() {
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            placeholder="Password"
-            className="w-full pl-12 pr-5 py-4 rounded-full bg-[var(--color-bg-soft)] border border-[var(--color-line)] focus:outline-none focus:border-[var(--color-gold)]/50"
+            placeholder="Wachtwoord"
+            className="w-full pl-12 pr-5 py-4 rounded-full bg-white border border-[var(--color-line-strong)] focus:outline-none focus:border-[var(--color-cta)]"
           />
         </div>
-        {error && <div className="text-sm text-red-300">{error}</div>}
-        <button disabled={pending} className="w-full py-4 rounded-full bg-[var(--color-gold)] text-[var(--color-bg)] font-medium hover:bg-[var(--color-gold-bright)] transition disabled:opacity-60">
-          {pending ? "Signing in…" : "Sign in"}
+        {error && <div className="text-sm text-red-700">{error}</div>}
+        <button disabled={pending} className="w-full py-4 rounded-full btn-cta font-medium disabled:opacity-60">
+          {pending ? "Inloggen…" : "Inloggen"}
         </button>
       </form>
     </div>

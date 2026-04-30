@@ -18,10 +18,10 @@ export default function WishlistButton({ productId, initiallyOn = false }: { pro
       disabled={pending}
       className={`inline-flex items-center justify-center w-12 h-12 rounded-full border transition ${
         on
-          ? "bg-[var(--color-wine)]/40 border-[var(--color-wine-bright)]/60 text-[var(--color-wine-bright)]"
-          : "border-[var(--color-line)] hover:border-[var(--color-gold)]/40 text-[var(--color-ink-dim)] hover:text-[var(--color-gold-bright)]"
+          ? "bg-[var(--color-cta)]/10 border-[var(--color-cta)]/40 text-[var(--color-cta)]"
+          : "bg-white border-[var(--color-line-strong)] hover:border-[var(--color-accent)] text-[var(--color-ink-dim)] hover:text-[var(--color-accent)]"
       }`}
-      aria-label="Add to wishlist"
+      aria-label="Wishlist"
     >
       <Heart size={18} fill={on ? "currentColor" : "none"} />
     </button>
